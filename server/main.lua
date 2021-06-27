@@ -7,15 +7,31 @@ AddEventHandler('esx_PoliceBuddy:ServerDutyToggle', function(notificationText, d
     local xPlayer = ESX.GetPlayerFromId(source)
     local xPlayerName = xPlayer.getName()
     local identifier = xPlayer.getIdentifier()
-    TriggerClientEvent('esx_PoliceBuddy:DutyNotificationClient', -1, xPlayerName, notificationText)
-    
-    if Config.EnableDiscordWebHook then
-        PerformHttpRequest(Config.DiscordWebHookLink, 
-        function(err, text, headers) end, 
-        'POST', 
-        json.encode({username = 'Los Santos Police Department', content = "" .. xPlayerName .. " " .. discordText}), 
-        { ['Content-Type'] = 'application/json' }
-        )
+
+    -- Get the character name
+    if Config.GetCharacterName then
+        MySQL.Async.fetchAll('SELECT lastname, firstname FROM users WHERE identifier = @id', { ['@id'] = xPlayerIdentifier }, function(results)
+            local nameserverprint = ('%s %s'):format(results[1].firstname, results[1].lastname)
+            TriggerClientEvent('esx_PoliceBuddy:DutyNotificationClient', -1, nameserverprint, notificationText)
+            if Config.EnableDiscordWebHook then
+                PerformHttpRequest(Config.DiscordWebHookLink, 
+                function(err, text, headers) end, 
+                'POST', 
+                json.encode({username = 'Los Santos Police Department', content = "" .. nameserverprint .. " " .. discordText}), 
+                { ['Content-Type'] = 'application/json' }
+                )
+            end
+        end)
+    else
+        TriggerClientEvent('esx_PoliceBuddy:DutyNotificationClient', -1, xPlayerName, notificationText)
+        if Config.EnableDiscordWebHook then
+            PerformHttpRequest(Config.DiscordWebHookLink, 
+            function(err, text, headers) end, 
+            'POST', 
+            json.encode({username = 'Los Santos Police Department', content = "" .. xPlayerName .. " " .. discordText}), 
+            { ['Content-Type'] = 'application/json' }
+            )
+        end
     end
 end)
 
