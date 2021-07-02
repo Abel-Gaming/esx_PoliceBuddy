@@ -38,18 +38,17 @@ end)
 RegisterServerEvent('esx_PoliceBuddy:GiveRifle')
 AddEventHandler('esx_PoliceBuddy:GiveRifle', function()
     local xPlayer = ESX.GetPlayerFromId(source)
-    if xPlayer.hasWeapon('WEAPON_ASSAULTRIFLE') then
-        xPlayer.addWeaponAmmo('WEAPON_ASSAULTRIFLE', 100)
+    if xPlayer.hasWeapon('WEAPON_CARBINERIFLE') then
+        xPlayer.addWeaponAmmo('WEAPON_CARBINERIFLE', 100)
         xPlayer.showNotification('Rifle Ammo Added!')
     else
-        xPlayer.addWeapon("WEAPON_ASSAULTRIFLE", 100)
+        xPlayer.addWeapon("WEAPON_CARBINERIFLE", 100)
     end
 end)
 
 RegisterServerEvent('esx_PoliceBuddy:RefillAmmo')
 AddEventHandler('esx_PoliceBuddy:RefillAmmo', function(weapon)
     local xPlayer = ESX.GetPlayerFromId(source)
-    
     if xPlayer.hasWeapon(weapon) then
         xPlayer.addWeaponAmmo(weapon, 100)
     else
