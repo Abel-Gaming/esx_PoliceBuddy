@@ -13,9 +13,18 @@ Trunk Functions
 - Grab AR (Carbine Rifle)
 - Refill pistol ammo
 
-Included Events
+Included Events (No parameters required, uses the closes vehicle)
 - Open trunk
 - Close trunk
 - Toggle Duty
 - Refuel
-- Duty Notifications
+
+Included Events (Parameters required)
+- Duty Notification From Server:
+```lua
+TriggerClientEvent('esx_PoliceBuddy:DutyNotificationClient', playerName --[[String]], notificationText --[[String]])
+```
+- Duty Notification From Client:
+```lua
+TriggerEvent('esx_PoliceBuddy:DutyNotificationClient', playerName --[[String]], notificationText --[[String]])
+```
